@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MC Pack Showcase</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Meow+Script&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <div class="logo">My Skins</div>
+        <nav>
+             <a class="primary" onclick="window.location.href='../nghich.html'">Quay lại trang chủ</a>
+        </nav>
+    </header>
+
+  <main class="container main-content">
+    
+    <!-- BƯỚC 1: DANH SÁCH PACK -->
+    <section id="view-packs">
+      <div class="section-header">
+        <h1>Danh sách Pack</h1>
+        <p>Chọn một pack để xem các mục thay đổi bên trong</p>
+      </div>
+      <div id="pack-list" class="grid-packs"></div>
+    </section>
+
+    <!-- BƯỚC 2: DANH SÁCH CÁC THỨ PACK THAY ĐỔI -->
+    <section id="view-items" class="hidden">
+      <div class="top-bar">
+        <button class="btn-back" onclick="goHome()">← Quay lại danh sách Pack</button>
+        <a id="pack-download-btn" href="#" target="_blank" class="btn-download">⬇ Tải Pack (.zip)</a>
+      </div>
+
+      <div class="pack-info-box">
+        <span id="detail-pack-version" class="badge"></span>
+        <h2 id="detail-pack-title"></h2>
+        <p id="detail-pack-desc"></p>
+      </div>
+
+      <h3 class="sub-heading">Các mục đã thay đổi (Bấm vào từng mục để review & so sánh):</h3>
+      <div id="item-list" class="grid-items"></div>
+    </section>
+
+  </main>
+
+  <!-- BƯỚC 3: MODAL REVIEW & NÚT GẠT SO SÁNH -->
+  <div id="review-modal" class="modal hidden" onclick="closeModal(event)">
+    <div class="modal-box" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <div>
+          <span id="review-category" class="badge-small"></span>
+          <h3 id="review-title"></h3>
+        </div>
+        <button class="btn-close" onclick="forceCloseModal()">✕</button>
+      </div>
+
+      <div class="preview-stage">
+        <div id="review-model" class="model-canvas modal-model-preview" aria-label="Model item 3D"></div>
+        <span id="status-tag" class="status-tag on">ĐANG BẬT PACK</span>
+      </div>
+
+      <div class="compare-controls">
+        <div class="toggle-wrapper">
+          <span class="toggle-label">Mặc định (Vanilla)</span>
+          <label class="switch">
+            <input type="checkbox" id="pack-toggle" checked onchange="togglePackCompare()">
+            <span class="slider"></span>
+          </label>
+          <span class="toggle-label active-text">Bật Pack</span>
+        </div>
+        <p id="review-note" class="review-note"></p>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script src="block-model-renderer.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

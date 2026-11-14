@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quản Lý & Gửi Pack | Admin</title>
+  <link href="https://googleapis.com" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="navbar">
+    <div class="container nav-inner">
+      <div class="logo" onclick="window.location.href='index.html'">MC PACK <span>ADMIN</span></div>
+      <div class="nav-links">
+        <a href="index.html">← Xem trang Viewer</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container main-content">
+
+    <!-- MÀN HÌNH KHÓA MẬT KHẨU -->
+    <section id="admin-login" class="login-box">
+      <h2>Đăng nhập Admin</h2>
+      <p>Nhập mật khẩu để quản lý và đăng pack mới</p>
+      <input type="password" id="admin-pass" placeholder="Nhập mật khẩu (mặc định: 1234)" onkeyup="if(event.key==='Enter') checkAdminLogin()">
+      <button class="btn-download w-full" onclick="checkAdminLogin()">Mở khóa</button>
+    </section>
+
+    <!-- KHU VỰC QUẢN TRỊ -->
+    <section id="admin-panel" class="hidden">
+      <div class="admin-grid">
+        
+        <!-- CỘT TRÁI: FORM TẠO PACK MỚI -->
+        <div class="admin-card">
+          <h2>1. Tạo Pack Mới</h2>
+          
+          <div class="form-group">
+            <label>Chọn file Pack (.zip)</label>
+            <input type="file" id="pack-zip" accept=".zip,application/zip" onchange="readPackArchive(this.files[0])">
+            <p class="form-hint">Tự lấy tên từ file ZIP, ảnh đại diện từ pack.png/avatar.png/avt.png và mô tả từ pack.mcmeta.</p>
+            <p id="pack-upload-status" class="pack-upload-status" aria-live="polite"></p>
+          </div>
+
+          <div class="form-group">
+            <label for="p-title">Tên Pack *</label>
+            <input type="text" id="p-title" placeholder="Tự lấy từ tên file .zip">
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Phiên bản</label>
+              <input type="text" id="p-version" placeholder="Ví dụ: 1.8.9 hoặc 1.20+">
+            </div>
+            <div class="form-group">
+              <label>Link tải Pack (.zip), nếu không chọn file</label>
+              <input type="url" id="p-download" placeholder="Có thể để trống khi đã chọn file ZIP">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="p-thumb">Ảnh đại diện Pack *</label>
+            <input type="text" id="p-thumb" placeholder="Tự lấy từ pack.png, avatar.png hoặc avt.png">
+            <img id="p-thumb-preview" class="pack-thumbnail-preview hidden" alt="Xem trước ảnh đại diện pack">
+          </div>
+
+          <div class="form-group">
+            <label>Mô tả ngắn</label>
+            <textarea id="p-desc" rows="2" placeholder="Mô tả điểm nổi bật của pack..."></textarea>
+          </div>
+
+          <details class="advanced-section">
+            <summary>
+              <span>So sánh chi tiết các mục trong pack</span>
+              <span class="optional-label">Nâng cao · Không bắt buộc</span>
+            </summary>
+            <div class="advanced-content">
+              <div class="items-header">
+                <h3>Các mục thay đổi trong Pack</h3>
+                <button type="button" class="btn-add-item" onclick="addChangeInput()">+ Thêm mục mới</button>
+              </div>
+
+              <div id="changes-inputs">
+                <!-- Các ô nhập từng món GUI/Tool sẽ hiện ở đây -->
+              </div>
+            </div>
+          </details>
+
+          <button type="button" class="btn-download w-full mt-16" onclick="submitNewPack()">✔ Lưu Pack & Tạo Code</button>
+        </div>
+
+        <!-- CỘT PHẢI: DANH SÁCH PACK & XUẤT CODE ĐỂ UP WEB -->
+        <div class="admin-card">
+          <h2>2. Danh sách Pack hiện có</h2>
+          <div id="admin-pack-list" class="admin-list"></div>
+
+          <hr class="divider">
+
+          <h2>3. Xuất dữ liệu lên Web</h2>
+          <p class="help-text">
+            Pack ZIP được lưu trên trình duyệt này. Muốn người khác tải pack trên website đã đăng, hãy nhập link ZIP công khai trước khi xuất dữ liệu.
+          </p>
+          <button type="button" class="btn-copy-code" onclick="copyExportCode()">📋 Copy Code file script.js</button>
+          <textarea id="export-box" readonly rows="6" placeholder="Code xuất ra sẽ hiện ở đây..."></textarea>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

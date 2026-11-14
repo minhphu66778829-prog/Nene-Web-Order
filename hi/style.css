@@ -1,0 +1,152 @@
+/* Reset mặc định của trình duyệt cho chuẩn */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+header {
+    background-image: url("https://cdn.discordapp.com/attachments/1433324497544548382/1570720653588566056/Khong_Co_Tieu_e8_20261113154251.png?ex=6af81f1a&is=6af6cd9a&hm=d17ac0709b138691279924e6cad22495deec9d81f0583dad07bf59b242d6a662&");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    padding: 35px 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-family: Meow Script, cursive; 
+    color: #7fc5ff;
+    font-size: 56px;
+    font-weight: bold;
+}
+
+nav a {
+    color: #ffffff;
+    font-weight: bold;
+    text-decoration: none;
+    margin-left: 25px;
+    text-shadow: 1px 1px 3px rgba(30, 58, 138, 0.5); 
+}
+
+nav a:hover {
+    color: #fef08a; 
+}
+
+
+/* 2. Làm đẹp khu vực Hero */
+.hero {
+    text-align: center;
+    padding: 80px 20px;
+    background-color: white;
+}
+
+.hero h1 {
+    font-size: 36px;
+    margin-bottom: 15px;
+}
+
+.hero p {
+    font-size: 18px;
+    color: #666;
+    margin-bottom: 25px;
+}
+
+.hero button {
+    background-color: #658acf;
+    color: white;
+    border: none;
+    padding: 12px 28px;
+    font-size: 16px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.hero button:hover {
+    background-color: #6c97e7;
+}
+
+/* 3. Chia 3 thẻ nằm ngang bằng Flexbox */
+.danh-sach-the {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding: 50px;
+}
+
+.the {
+    background-color: white;
+    padding: 30px;
+    border-radius: 8px;
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Đổ bóng nhẹ */
+}
+
+.the button {
+    margin-top: auto;
+    background-color: #658acf;
+    color: white;
+    border: none;
+    padding: 12px 38px;
+    font-size: 16px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.the button:hover {
+    background-color: #6c97e7;
+}
+
+/* 4. Làm đẹp Footer */
+footer {
+    background-color: #1e293b;
+    color: #94a3b8;
+    text-align: center;
+    padding: 20px;
+    margin-top: 40px;
+}
+.and {
+    background-color: white;
+    padding:  30px;
+    border-radius: 8px;
+    width: 300px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Đổ bóng nhẹ */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+.the h3 {
+    margin-bottom: 10px;
+    color: #4070ca;
+}
+
+.the p {
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+.and button {
+    margin-top: auto;
+    background-color: #658acf;
+    color: white;
+    border: none;
+    padding: 12px 38px;
+    font-size: 16px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.and button:hover {
+    background-color: #6c97e7;
+}

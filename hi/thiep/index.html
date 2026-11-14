@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thiệp 3D Đặc Biệt</title>
+    
+    <!-- Link nhung font chu viet tay chuan tu Google Fonts -->
+    <link rel="preconnect" href="https://googleapis.com">
+    <link rel="preconnect" href="https://gstatic.com" crossorigin>
+    <link href="https://googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- 1. Nơi chứa mô hình 3D hộp quà Spline -->
+    <div class="container-3d">
+        <!-- Nhúng thư viện Spline Viewer chuẩn -->
+        <script type="module" src="https://cdn.spline.design/@splinetool/viewer@2.0.56/build/spline-viewer.js"></script>
+        <spline-viewer url="https://prod.spline.design/en7s1TY7F2Zu5Mzb/scene.splinecode"></spline-viewer>
+    </div>
+
+    <!-- 2. Lớp chữ và nút bấm đè lên hộp quà ở màn hình chào -->
+    <div class="overlay-content">
+        <p class="title">Thân gửi,</p>
+        <h1 id="receiver-name">Belikhun</h1>
+        <p class="message">Chúc bạn một ngày tràn ngập niềm vui và hạnh phúc nhé! ✨</p>
+        
+        <!-- NÚT MỞ MÀN HÌNH CHỮ BAY -->
+        <button id="open-letter-btn" onclick="toggleLetter(true)">Bật mở lá thư bí mật 💌</button>
+    </div>
+
+    <!-- 3. KHUNG CHỨA VŨ TRỤ CHỮ VÀ SAO LẤP LÁNH 3D TRUNG THU (NẰM ĐỘC LẬP NGOÀI) -->
+        <!-- 3. KHUNG CHỨA VŨ TRỤ CHỮ VÀ SAO LẤP LÁNH 3D TRUNG THU -->
+    <div id="letter-popup" class="letter-hidden">
+        <!-- Canvas 1 (Nằm dưới): Chuyên gánh dải chữ và trời sao lấp lánh 3D -->
+        <canvas id="heart-canvas"></canvas>
+        
+        <!-- FIX LỖI CHÍ MẠNG: Thêm đúng thẻ canvas này vào để JavaScript tìm thấy bộ vẽ lồng đèn -->
+        <canvas id="lantern-canvas"></canvas>
+
+        <!-- CHIẾC NÚT BẤM CỐ ĐỊNH Ở GÓC DƯỚI BÊN PHẢI MÀN HÌNH -->
+        <button id="special-letter-btn" onclick="openLongLetter()">Đọc thư tay tớ viết nè 📜💖</button>
+    </div>
+
+
+    <!-- 4. KHUNG POPUP LÁ THƯ TAY CHỨA LỜI CHÚC DÀI CHUẨN CUNG ĐÌNH -->
+    <div id="final-letter-popup" class="final-letter-hidden">
+        <div class="letter-paper">
+            <span class="close-letter-btn" onclick="closeLongLetter()">&times;</span>
+            <h2>Dear, <span class="letter-name">Người Bạn Bí Ẩn</span> 🌸</h2>
+            <div class="letter-text">
+                <div class="letter-scroll-text">
+                    <p>Trung thu đến rồi, gửi đến cậu những lời chúc ấm áp nhất! Cảm ơn cậu vì đã luôn là một mảnh ghép rạng rỡ mang đến niềm vui cho tớ và moi người xung quanh.</p>
+                    <p>Chúc cậu đêm rằm phá cỗ thật vui vẻ, luôn rạng ngời, gặp thật nhiều may mắn và có những phút giây thật tuyệt vời bên gia đình nhen!</p>
+                    <p>Mong rằng chặng đường phía trước của cậu sẽ luôn ngập tràn bình an và được bao bọc bởi tình yêu thương của những người trân quý cậu. Happy Mid-Autumn! 🏮🥮🌕</p>
+                </div>
+                <!-- Nút bấm gọi mưa lồng đèn bánh trung thu bay từ dưới đáy lên -->
+                <button id="heart-burst-btn" onclick="burstHearts()">Phá cỗ rước đèn nè 🏮🐰</button>
+            </div>
+        </div>
+    </div>
+    <!-- THẺ CHỨA NHẠC LOFI TRUNG THU ẨN CHẠY TỰ ĐỘNG -->
+    <audio id="bg-music" loop>
+        <source src="https://github.com/minhphu66778829-prog/model-3d/raw/refs/heads/main/FDown.vn_TikTok_Video_Downloader_9f6a.mp3" type="audio/mp3">
+    </audio>
+
+
+    <!-- Nhung file JavaScript de lay ten từ URL -->
+    <script src="script.js"></script>
+</body>
+</html>
+
+    <!-- Nhung file JavaScript de lay ten từ URL -->
+    <script src="script.js"></script>
+</body>
+</html>

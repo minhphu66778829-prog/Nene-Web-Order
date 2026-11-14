@@ -1,0 +1,269 @@
+/* Giao diện phòng triển lãm tranh chữ bay lơ lửng 3D */
+* {
+    box-sizing: border-box;
+    margin: 0; padding: 0;
+}
+
+body {
+    background-color: #05010a; 
+    overflow: hidden;
+    font-family: 'Arial', sans-serif;
+    min-height: 100vh;
+    position: relative;
+    
+    /* KHÓA CỨNG GUI ĐIỆN THOẠI: Ép chặn hoàn toàn hành vi kéo cuộn nảy trang của iOS và Android */
+    touch-action: none; 
+    -webkit-overflow-scrolling: auto;
+}
+
+
+/* Khung chứa hộp quà Spline ban đầu của bro */
+.container-3d {
+    position: absolute;
+    top: 0; left: 50%; 
+    width: 100vw; height: 100vh;
+    z-index: 1;
+    transform: translateX(-12%) scale(1.2); 
+    transform-origin: center center;
+    transition: opacity 0.8s ease;
+}
+.container-3d.fade-out { opacity: 0; pointer-events: none; }
+
+spline-viewer { width: 100%; height: 100%; }
+
+/* Lớp chữ ở màn hình chào */
+.overlay-content {
+    position: absolute;
+    bottom: 18%; left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    text-align: center;
+    width: 90%; max-width: 600px;
+    pointer-events: none;
+    transition: opacity 0.8s ease;
+}
+.overlay-content.fade-out { opacity: 0; pointer-events: none; }
+
+.title { font-size: 1.4rem; color: #fff; opacity: 0.8; margin-bottom: 5px; }
+
+#receiver-name {
+    font-family: 'Dancing Script', cursive;
+    font-size: 3.8rem; color: #ffb3d1;
+    text-shadow: 0 0 15px rgba(255, 179, 209, 0.8);
+    margin-bottom: 12px;
+}
+.message { font-size: 1.25rem; color: #fff; opacity: 0.9; line-height: 1.6; text-shadow: 0 0 10px rgba(0, 0, 0, 0.8); }
+
+#open-letter-btn {
+    margin-top: 20px; padding: 12px 28px;
+    font-size: 1.1rem; font-weight: bold; color: #fff;
+    background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%);
+    border: none; border-radius: 25px; cursor: pointer;
+    pointer-events: auto; box-shadow: 0 5px 15px rgba(255, 117, 140, 0.4);
+    transition: all 0.3s ease;
+}
+#open-letter-btn:hover { transform: scale(1.05); }
+
+/* --- TẦNG 2: PHÒNG TRIỂN LÃM CHỮ VÀ ẢNH 3D LƠ LỬNG --- */
+#letter-popup {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background-color: #05010a; /* Nền tối sâu thẳm */
+    z-index: 100;
+    transition: opacity 0.6s ease;
+}
+
+/* Biến lá thư cũ thành bảng canvas vẽ toàn màn hình */
+#heart-canvas {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 101;
+    cursor: grab; /* Hiển thị bàn tay để biết kéo xoay được */
+}
+#heart-canvas:active { cursor: grabbing; }
+
+/* Trạng thái ẩn/hiện phòng triển lãm */
+.letter-hidden { opacity: 0; pointer-events: none; }
+.letter-visible { opacity: 1; pointer-events: auto; }
+
+/* Ẩn hoàn toàn cái khung giấy da pink trắng cũ đi */
+.letter-hidden .letter-content, .letter-visible .letter-content {
+    display: none !important;
+}
+
+/* Dòng chữ hướng dẫn góc trên cùng */
+.gallery-hint {
+    position: absolute;
+    top: 5%; left: 50%;
+    transform: translateX(-50%);
+    color: #ffb3d1; font-size: 1.1rem; z-index: 110;
+    text-shadow: 0 0 10px rgba(255,179,209,0.5);
+    font-style: italic; pointer-events: none; width: 100%; text-align: center;
+    animation: pulseHint 2s infinite;
+}
+@keyframes pulseHint { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translate(-50%, 20px); }
+    to { opacity: 1; transform: translate(-50%, 0); }
+}
+
+/* --- CSS ĐỊNH VỊ NÚT GÓC MÀN HÌNH VÀ POPUP THƯ TAY DÀI --- */
+
+/* Ép chiếc nút nằm cố định sát rạt góc dưới bên phải màn hình đè lên canvas chữ bay */
+#special-letter-btn {
+    position: absolute;
+    bottom: 5%;
+    right: 5%;
+    padding: 14px 28px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #fff;
+    background: linear-gradient(135deg, #ff4e50 0%, #f9d423 100%); /* Tone màu hoàng hôn rước đèn rực rỡ */
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    z-index: 120; /* Cho lớp nằm trên cùng canvas để click chuột thoải mái */
+    box-shadow: 0 0 20px rgba(255, 78, 80, 0.6);
+    animation: bounceButton 1.2s infinite alternate; /* Hiệu ứng nhấp nhô nhẹ cực kỳ kích thích tò mò */
+    pointer-events: auto;
+}
+
+@keyframes bounceButton {
+    from { transform: translateY(0); box-shadow: 0 0 15px rgba(255, 78, 80, 0.5); }
+    to { transform: translateY(-8px); box-shadow: 0 0 25px rgba(255, 78, 80, 0.9); }
+}
+
+/* Khung nền mờ phủ toàn bộ vũ trụ chữ bay phía sau khi mở thư */
+#final-letter-popup {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background-color: rgba(11, 2, 20, 0.85); 
+    backdrop-filter: blur(8px); /* Làm mờ dải chữ bay phía sau tạo chiều sâu */
+    z-index: 200; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.5s ease;
+}
+
+/* Trạng thái ẩn/hiện lá thư tay */
+.final-letter-hidden { opacity: 0; pointer-events: none; transform: scale(0.9); }
+.final-letter-visible { opacity: 1; pointer-events: auto; transform: scale(1); }
+
+/* Khối nội dung giấy da thư tay */
+.letter-paper {
+    background: #fff0f5; /* Màu hồng phấn cung đình dịu nhẹ */
+    color: #4a3b4e;
+    padding: 40px;
+    border-radius: 20px;
+    width: 85%;
+    max-width: 460px;
+    position: relative;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+    border: 2px dashed #ffb3d1;
+    animation: fadeInPaper 0.5s ease-out;
+}
+
+.letter-paper h2 {
+    font-family: 'Dancing Script', cursive;
+    color: #d63031;
+    font-size: 2.3rem;
+    margin-bottom: 20px;
+}
+
+/* Vùng cuộn văn bản nếu lời chúc của bro siêu dài */
+.letter-scroll-text {
+    max-height: 250px;
+    overflow-y: auto;
+    padding-right: 5px;
+    margin-bottom: 20px;
+}
+
+.letter-scroll-text p {
+    font-size: 1.15rem;
+    line-height: 1.7;
+    margin-bottom: 15px;
+    text-align: justify;
+}
+
+/* Tinh chỉnh thanh cuộn nhỏ siêu đẹp */
+.letter-scroll-text::-webkit-scrollbar { width: 5px; }
+.letter-scroll-text::-webkit-scrollbar-thumb { background: #ffb3d1; border-radius: 10px; }
+
+/* Nút dấu X tắt thư tay */
+.close-letter-btn {
+    position: absolute;
+    top: 15px; right: 20px;
+    font-size: 2.2rem;
+    cursor: pointer;
+    color: #aaa;
+    transition: 0.3s;
+}
+.close-letter-btn:hover { color: #d63031; }
+
+/* Nút phá cỗ thả tim rước đèn */
+#heart-burst-btn {
+    padding: 12px 28px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #fff;
+    background: #ff4d79;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(255, 77, 121, 0.4);
+    display: block;
+    margin: 0 auto;
+}
+#heart-burst-btn:hover { transform: scale(1.05); }
+
+@keyframes fadeInPaper { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+.buttons button {
+    position: fixed;
+    bottom: 16px;
+    left: 16px;
+    background-color: #658acf;
+    color: white;
+    border: none;
+    padding: 12px 28px;
+    font-size: 16px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+
+header {
+    background-image: url("https://cdn.discordapp.com/attachments/1433324497544548382/1570720653588566056/Khong_Co_Tieu_e8_20261113154251.png?ex=6af81f1a&is=6af6cd9a&hm=d17ac0709b138691279924e6cad22495deec9d81f0583dad07bf59b242d6a662&");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    padding: 35px 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-family: Meow Script, cursive; 
+    color: #7fc5ff;
+    font-size: 56px;
+    font-weight: bold;
+}
+
+nav a {
+    color: #ffffff;
+    font-weight: bold;
+    text-decoration: none;
+    margin-left: 25px;
+    text-shadow: 1px 1px 3px rgba(30, 58, 138, 0.5); 
+}
+
+nav a:hover {
+    color: #fef08a; 
+}
